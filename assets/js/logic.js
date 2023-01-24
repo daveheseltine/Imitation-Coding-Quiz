@@ -5,6 +5,7 @@ var sfxIncorrect = new Audio("assets/sfx/incorrect.wav");
 
 
 // # Define Global Variables
+var inputInitials;
 var scoreCount;
 var quizStage;
 var timerCount = 0;
@@ -33,8 +34,15 @@ function goEndScreen() {
 }
 // ## Function to go to the "Highscores" element:
 function goHighscores() {
-  document.querySelector("#end-screen").setAttribute("class", "hide");
-  window.location.href="highscores.html";
+  if (document.querySelector("#initials").value === "") {
+    feedback("Please enter your initials!")
+  } else {
+    inputInitials = (document.querySelector("#initials").value).slice(0, 3).toUpperCase();
+    highscoresUpload();
+    highscoresCalculate();
+    document.querySelector("#end-screen").setAttribute("class", "hide");
+    window.location.href="highscores.html";
+  }
 }
 // ## Function to go to the "Questions" element:
 function goQuestions() {
@@ -44,6 +52,25 @@ function goQuestions() {
   document.querySelector("#start-screen").setAttribute("class", "hide");
   document.querySelector("#questions").setAttribute("class", "visible");
   timerStart();
+}
+// ## Function to calculate and save new highscores to local:
+function highscoresCalculate() {
+  var userScore = 
+  {
+    initials: inputInitials,
+    score: timerCount
+  }
+  highscores.push(userScore);
+  highscores.sort((i, j) => j.score - i.score);
+  highscores = highscores.slice(0, 5);
+  highscores = JSON.stringify(highscores);
+  localStorage.setItem("highscores", highscores);
+}
+// ## Function to check for and upload highscores from local:
+function highscoresUpload() {
+  if (localStorage.getItem("highscores") !== null) {
+    highscores = JSON.parse(localStorage.getItem("highscores"));
+  }
 }
 // ## Function to get the current question text, based on the quiz stage:
 function questionsGetText() {
@@ -108,4 +135,15 @@ document.querySelector("#btnAnswer2").addEventListener("click", function(event) 
 document.querySelector("#btnAnswer3").addEventListener("click", function(event) {
   event.preventDefault();
   questionsResolve(3);
+});
+// ## "End-screen" button and Enter key functionality:
+document.querySelector("#submit").addEventListener("click", function(event) {
+  event.preventDefault();
+  goHighscores()
+});
+document.querySelector("#initials").addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    goHighscores()
+  }
 });
