@@ -42,3 +42,8 @@ var questions = [
   correctAnswer: 3
 }
 ];
+
+
+// # Define HTML Elements
+// ## Define "Questions" element:
+document.querySelector("#choices").innerHTML = "<button id='btnAnswer0'/><button id='btnAnswer1'/><button id='btnAnswer2'/><button id='btnAnswer3'/>";
