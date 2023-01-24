@@ -77,7 +77,8 @@ function highscoresCalculate() {
 function highscoresUpload() {
   if (localStorage.getItem("highscores") !== null) {
     highscores = JSON.parse(localStorage.getItem("highscores"));
-  }
+  } else {
+    highscores = [];
 }
 // ## Function to get the current question text, based on the quiz stage:
 function questionsGetText() {
