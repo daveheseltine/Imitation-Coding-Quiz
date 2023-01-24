@@ -5,6 +5,7 @@ var sfxIncorrect = new Audio("assets/sfx/incorrect.wav");
 
 
 // # Define Global Variables
+var highscores;
 var inputInitials;
 var scoreCount;
 var quizStage;
