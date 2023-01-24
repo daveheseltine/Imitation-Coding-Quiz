@@ -11,6 +11,12 @@ var quizStage;
 var timerCount = 0;
 
 
+// # Define HTML Elements
+// ## Define "End-screen" element:
+document.querySelector("#initials").setAttribute("maxlength", 3);
+document.querySelector("#initials").setAttribute("style", "text-transform:uppercase");
+
+
 // # Define Functions
 // ## Function to show the feedback message for 1.5s:
 function feedback(text) {
