@@ -1,3 +1,9 @@
+// # Define Data:
+// ## Sound Effects
+var sfxCorrect = new Audio("assets/sfx/correct.wav");
+var sfxIncorrect = new Audio("assets/sfx/incorrect.wav");
+
+
 // # Define Global Variables
 var scoreCount;
 var quizStage;
@@ -5,6 +11,15 @@ var timerCount = 0;
 
 
 // # Define Functions
+// ## Function to show the feedback message for 1.5s:
+function feedback(text) {
+  document.querySelector("#feedback").textContent = text;
+  document.querySelector("#feedback").setAttribute("class", "feedback");
+  setTimeout(function() {
+    document.querySelector("#feedback").setAttribute("class", "feedback hide");
+  },
+  1500);
+}
 // ## Function to go to the "End-Screen" element:
 function goEndScreen() {
   clearInterval(timer);
@@ -38,6 +53,25 @@ function questionsGetText() {
   document.querySelector("#btnAnswer2").textContent = questions[quizStage].answer2;
   document.querySelector("#btnAnswer3").textContent = questions[quizStage].answer3
 }
+// ## Function to resolve the current question, and update to the next stage of the quiz:
+function questionsResolve(guess) {
+  if (guess === questions[quizStage].correctAnswer) {
+    feedback("Correct!")
+    sfxCorrect.play();
+    scoreCount++;
+  } else {
+    feedback("Wrong!")
+    sfxIncorrect.play();
+    timerCount = timerCount - 10;
+    document.querySelector("#time").textContent = timerCount;
+  }
+  quizStage++
+  if (quizStage > questions.length - 1) {
+    goEndScreen()
+  } else {
+    questionsGetText()
+  }
+}
 // Function to activate the timer at 45s:
 function timerStart() {
   timerCount = 45;
@@ -57,4 +91,21 @@ function timerStart() {
 document.querySelector("#start").addEventListener("click", function(event) {
   event.preventDefault();
   goQuestions()
+});
+// ## Answer buttons:
+document.querySelector("#btnAnswer0").addEventListener("click", function(event) {
+  event.preventDefault();
+  questionsResolve(0)
+});
+document.querySelector("#btnAnswer1").addEventListener("click", function(event) {
+  event.preventDefault();
+  questionsResolve(1)
+});
+document.querySelector("#btnAnswer2").addEventListener("click", function(event) {
+  event.preventDefault();
+  questionsResolve(2)
+});
+document.querySelector("#btnAnswer3").addEventListener("click", function(event) {
+  event.preventDefault();
+  questionsResolve(3);
 });
